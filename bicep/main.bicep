@@ -36,7 +36,7 @@ resource deploymentscript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     }
   }
   properties: {
-    azCliVersion: 'latest' 
+    azCliVersion: '2.91' 
     retentionInterval: 'P1D'
     timeout:'PT10M'
     cleanupPreference:'OnSuccess'
