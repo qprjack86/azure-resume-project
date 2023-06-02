@@ -42,7 +42,7 @@ resource deploymentscript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     azCliVersion: '2.9.1' 
     retentionInterval: 'P1D'
     timeout:'PT10M'
-    cleanupPreference:'OnSuccess'
+    cleanupPreference:'Always'
   arguments: '\'${StorageAccountName}\' \'${WebsiteFilePath}\''
   scriptContent:'''
  az storage blob service-properties update --account-name $StorageAccountName --static-website --index-document index.html
