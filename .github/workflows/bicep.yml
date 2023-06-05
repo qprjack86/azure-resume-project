@@ -5,10 +5,10 @@ on:
     paths:
       - '**.bicep'
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   generate-arm:
@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@master
+        uses: actions/checkout@main
 
       - name: Install Bicep build
         run: | 
