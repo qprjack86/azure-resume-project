@@ -1,0 +1,182 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.resume-container {
+    background-color: white;
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* 1/3 Sidebar, 2/3 Main */
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* SIDEBAR STYLES */
+.sidebar {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-right: 2px solid #ddd;
+}
+
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-section h2, .skills-section h2, .soft-skills-section h2 {
+    font-size: 1.2rem;
+    color: #556b2f; /* Olive Green from example */
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+.contact-section ul {
+    list-style: none;
+}
+
+.contact-section li {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-section a {
+    text-decoration: none;
+    color: #333;
+}
+
+.skill-category h3 {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.skill-bar {
+    background-color: #eee;
+    height: 8px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.level {
+    background-color: #556b2f; /* Olive Green */
+    height: 100%;
+    border-radius: 4px;
+}
+
+.dots-list {
+    list-style: none;
+}
+
+.dots-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.dots-list span {
+    color: #556b2f;
+}
+
+/* MAIN CONTENT STYLES */
+.main-content {
+    padding: 40px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #556b2f;
+}
+
+header h2 {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: normal;
+    margin-bottom: 30px;
+}
+
+section h3 {
+    font-size: 1.4rem;
+    color: #556b2f;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+p, li {
+    line-height: 1.6;
+    color: #444;
+}
+
+.job {
+    margin-bottom: 25px;
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.job-header h4 {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.date {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.company {
+    display: block;
+    font-style: italic;
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.job ul {
+    margin-left: 20px;
+}
+
+.edu-item {
+    margin-bottom: 15px;
+}
+
+.school {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Responsive for Mobile */
+@media (max-width: 768px) {
+    .resume-container {
+        grid-template-columns: 1fr;
+    }
+    .sidebar {
+        border-right: none;
+        border-bottom: 2px solid #ddd;
+    }
+}
