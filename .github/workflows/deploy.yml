@@ -1,0 +1,60 @@
+name: Deploy Cloud Resume
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 1. Log into Azure
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 2. Deploy Infrastructure (Bicep)
+      - name: Deploy Bicep
+        id: bicep_deploy
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourceGroup
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: js-resumechallenge-rg 
+          template: ./infra/main.bicep
+          parameters: appName=jackstalley-resume
+
+      # 3. Configure App Settings (Link API to Database)
+      - name: Set API Settings
+        run: |
+          az staticwebapp appsettings set \
+            --name ${{ steps.bicep_deploy.outputs.swaName }} \
+            --setting-names CosmosConnection="${{ steps.bicep_deploy.outputs.cosmosConnectionString }}"
+
+      # 4. Get Deployment Token (Required for SWA Deploy)
+      - name: Get SWA Deployment Token
+        id: swa_token
+        run: |
+          token=$(az staticwebapp secrets list --name ${{ steps.bicep_deploy.outputs.swaName }} --query "properties.apiKey" -o tsv)
+          echo "::add-mask::$token"
+          echo "SWA_TOKEN=$token" >> $GITHUB_ENV
+
+      # 5. Build and Deploy App (Frontend + API)
+      - name: Deploy to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ env.SWA_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "frontend" # Path to HTML
+          api_location: "api"      # Path to Functions
