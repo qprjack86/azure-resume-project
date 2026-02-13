@@ -1,5 +1,6 @@
 // main.js
-const api_url = "YOUR_FUNCTION_APP_URL/api/VisitorCounter"; // Update after deploying function
+// In Azure Static Web Apps, integrated Functions are exposed at /api/* on the same host.
+const apiUrl = '/api/VisitorCounter';
 
 document.addEventListener('DOMContentLoaded', () => {
     getVisitorCount();
@@ -7,11 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function getVisitorCount() {
     try {
-        const response = await fetch(api_url);
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
         const data = await response.json();
-        document.getElementById("visitor-count").innerText = data.count;
+        document.getElementById('visitor-count').innerText = data.count ?? '0';
     } catch (error) {
-        console.error("Error fetching visitor count:", error);
-        document.getElementById("visitor-count").innerText = "Error";
+        console.error('Error fetching visitor count:', error);
+        document.getElementById('visitor-count').innerText = 'Error';
     }
 }
