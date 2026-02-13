@@ -13,6 +13,9 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      APP_NAME: jackstalley-resume
+      RESOURCE_GROUP: js-resumechallenge-rg
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -30,18 +33,30 @@ jobs:
         with:
           scope: resourcegroup
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: js-resumechallenge-rg 
+          resourceGroupName: ${{ env.RESOURCE_GROUP }}
           template: ./infra/main.bicep
-          parameters: appName=jackstalley-resume
+          parameters: appName=${{ env.APP_NAME }}
 
-      # 3. Configure App Settings (Link API to Database)
+      # 3. Get Cosmos DB connection string
+      - name: Get Cosmos DB Connection String
+        id: cosmos_conn
+        run: |
+          conn=$(az cosmosdb keys list \
+            --name "${{ env.APP_NAME }}-db" \
+            --resource-group "${{ env.RESOURCE_GROUP }}" \
+            --type connection-strings \
+            --query "connectionStrings[0].connectionString" -o tsv)
+          echo "::add-mask::$conn"
+          echo "COSMOS_CONNECTION=$conn" >> $GITHUB_ENV
+
+      # 4. Configure App Settings (Link API to Database)
       - name: Set API Settings
         run: |
           az staticwebapp appsettings set \
             --name ${{ steps.bicep_deploy.outputs.swaName }} \
-            --setting-names CosmosConnection="${{ steps.bicep_deploy.outputs.cosmosConnectionString }}"
+            --setting-names CosmosConnection="${{ env.COSMOS_CONNECTION }}"
 
-      # 4. Get Deployment Token (Required for SWA Deploy)
+      # 5. Get Deployment Token (Required for SWA Deploy)
       - name: Get SWA Deployment Token
         id: swa_token
         run: |
@@ -49,7 +64,7 @@ jobs:
           echo "::add-mask::$token"
           echo "SWA_TOKEN=$token" >> $GITHUB_ENV
 
-      # 5. Build and Deploy App (Frontend + API)
+      # 6. Build and Deploy App (Frontend + API)
       - name: Deploy to Static Web App
         uses: Azure/static-web-apps-deploy@v1
         with:

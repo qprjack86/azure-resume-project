@@ -48,4 +48,3 @@ resource swa 'Microsoft.Web/staticSites@2022-09-01' = {
 
 // Outputs to help the GitHub Action
 output swaName string = swa.name
-output cosmosConnectionString string = cosmosAccount.listConnectionStrings().connectionStrings[0].connectionString
