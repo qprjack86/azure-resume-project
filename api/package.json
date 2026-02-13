@@ -1,0 +1,9 @@
+{
+  "name": "resume-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Azure Functions API for Azure Resume",
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -4,18 +4,21 @@
       "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
-      "name": "Request",
-      "methods": ["get", "post"]
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ]
     },
     {
       "type": "http",
       "direction": "out",
-      "name": "Response"
+      "name": "res"
     },
     {
       "type": "cosmosDB",
       "direction": "in",
-      "name": "InputDoc",
+      "name": "inputDoc",
       "databaseName": "ResumeData",
       "collectionName": "Visitors",
       "connectionStringSetting": "CosmosConnection",
@@ -25,11 +28,12 @@
     {
       "type": "cosmosDB",
       "direction": "out",
-      "name": "OutputDoc",
+      "name": "outputDoc",
       "databaseName": "ResumeData",
       "collectionName": "Visitors",
       "connectionStringSetting": "CosmosConnection",
       "createIfNotExists": true
     }
-  ]
+  ],
+  "scriptFile": "index.js"
 }
