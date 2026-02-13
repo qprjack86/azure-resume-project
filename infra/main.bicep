@@ -8,7 +8,12 @@ resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   kind: 'GlobalDocumentDB'
   properties: {
     databaseAccountOfferType: 'Standard'
-    locations: [{ locationName: location }]
+    locations: [
+      {
+        locationName: location
+        failoverPriority: 0
+      }
+    ]
     capabilities: [{ name: 'EnableServerless' }]
   }
 }
